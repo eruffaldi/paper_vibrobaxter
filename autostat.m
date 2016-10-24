@@ -23,12 +23,23 @@ t.iuser = double(t.user);
 
 % targets
 targetnames = cellfun(@(x) x{1}, model.targets,'UniformOutput',false);
-
+transforms = cell(size(targetnames));
+invtargetnames = [];
 for I=1:length(model.targets)
     if strcmp(targetnames{I},'duration')
         targetnames{I} = 'duration';
         t.(targetnames{I}) = (t.(targetnames{I}));
     end
+    if 1==1
+        if 0 && strcmp(model.targets{I}{2},'pct')        
+            t.(targetnames{I}) = asin(0.01*t.(targetnames{I}));
+            transforms{I} = { @asin, @(x) 100*sin(x)};
+        elseif model.nolog==0 && strcmp(model.targets{I}{2},'pct')        % HERE
+            t.(targetnames{I}) = log10(t.(targetnames{I})+0.01);
+            transforms{I} = { @log10, @(x) (10.^x)-0.01};
+        end
+    end
+    invtargetnames.(targetnames{I}) = I;
 end
 
 % TODO: semantically move targets to good scans:
@@ -44,8 +55,10 @@ assert(w_userdisparity == 0,'Unbalanced not supported');
 
 % Understand if within-group or between-subjects
 % within-group = one condition per group
+[g_rows2group,g_labels,g_group2rows, g_groupnames] = igrpstats(t,'group');
 [gc_rows2group,gc_labels,gc_group2rows, gc_groupnames] = igrpstats(t,model.conditions);
 betweengroups = 1;
+num_conditions = length(gc_group2rows);
 
 for I=1:length(gc_labels)
     g = unique(t.group(gc_group2rows{I}));
@@ -119,31 +132,51 @@ end
 
 % FINALLY PLOT
 close all
-conditionvalues_withg =[{t.group},conditionvalues];
-for I=1:length(model.targets)
-    
+%conditionvalues_withg =[{t.group},conditionvalues];
+%conditions_withg = [{'group'} model.conditions];
+for I=1:length(model.errorplots)
+    vv = model.errorplots{I};
+    vvsafe = cellfun(@(x) strrep(x,'_','-'),vv,'UniformOutput',false);
     figure;
-    w = model.targets{I};
-    w = w{1};
-    if size(t.(w),2) > 1
-        boxplot(mean(t.(w),2),conditionvalues_withg);
-    else
-        boxplot(t.(w),conditionvalues_withg);
-    end
-    % TODO ylabel
-    title(sprintf('Target %s',strrep(w,'_','-')));
-end
+    assert(length(model.conditions) == 1,'only one param dim supported');
+    MV = zeros(length(gc_group2rows),length(vv),1);
+    eV = zeros(length(gc_group2rows),length(vv),2);
+    for K=1:length(vv)
+        w = vv{K};
+        n =height(t);
+        for J=1:length(gc_group2rows)
+            MV(J,K) = mean(t.(w)(gc_group2rows{J}));
 
-conditionvalues_withg =[{t.group},conditionvalues];
-for I=1:length(model.targets)
-    
-    figure;
-    w = model.targets{I};
-    w = w{1};
-    if size(t.(w),2) > 1
-        boxplot(mean(t.(w),2),conditionvalues);
-    else
-        boxplot(t.(w),conditionvalues);
+            eV(J,K,1) = std(t.(w)(gc_group2rows{J}))/n*1.96; % std error
+            eV(J,K,2) = eV(J,K,1);
+        end
+        if ~isempty(transforms{invtargetnames.(w)})
+            % inverse
+            ifx = transforms{invtargetnames.(w)}{2};
+            oMV = MV;
+            MV(:,K) = ifx(oMV(:,K));
+            % do bias in transformed, back transform, deapply mean
+            eV(:,K,1) = ifx(oMV(:,K)+eV(:,K,1))-MV(:,K);
+            eV(:,K,2) = ifx(oMV(:,K)-eV(:,K,2))-MV(:,K);
+        end
+    end
+
+    h = barwitherr(eV,MV);
+    ylabel('Values');
+    set(gca,'XTickLabel',gc_groupnames);
+    legend(vvsafe);
+end
+ 
+ conditionvalues_withg =[{t.group},conditionvalues];
+ for I=1:length(model.targets)
+     
+     figure;
+     w = model.targets{I};
+     w = w{1};
+     if size(t.(w),2) > 1
+         boxplot(mean(t.(w),2),conditionvalues_withg);
+     else
+        boxplot(t.(w),conditionvalues_withg);
     end
     % TODO ylabel
     title(sprintf('Target %s (with group)',strrep(w,'_','-')));

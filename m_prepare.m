@@ -7,6 +7,7 @@ sessions = maketab(users);
 sessions.hasbracelet = cell2mat(sessions.hasbracelet);
 
 %%
+load time_real_exp
 timt = sortrows(maketab(tim),{'Name','hasbracelet'});
 
 %% load data for all users
@@ -36,9 +37,12 @@ for I=1:height(sessions)
     
     %is1 = find(q.time >= tim(I).end_pick,1,'first');
     %ie1 = find(q.time <= tim(I).ini_leave,1,'first');
+    predu = q.time(end)-q.time(1);
     q = q(bnact,:);
     q.time = q.time-q.time(1);
-    sessions.duration(I) = q.time(end);
+    [predu,q.time(end),sum(bnact)/length(bact)]
+    st = q.time(2)-q.time(1);
+    sessions.duration(I) = st*height(q);
     sessions.data{I} = q;
 end
 
