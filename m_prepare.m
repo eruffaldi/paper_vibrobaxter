@@ -13,14 +13,19 @@ timt = sortrows(maketab(tim),{'Name','hasbracelet'});
 %% load data for all users
 sessions.data = cell(height(sessions),1);
 sessions.duration = zeros(height(sessions),1);
+sessions.segments = zeros(height(sessions),3,2);
 
 for I=1:height(sessions)
     data = processbag(sessions.bag{I});
     sessions.duration(I) = data.duration;
     sessions.data{I} = data.data;
+    x = data;
+    m = [x.k2_ini_pick,x.k2_end_pick;x.k2_ini_place,x.k2_end_place;x.k2_ini_leave,x.k2_end_leave];
+    sessions.segments(I,:,:) = m;
 
 end
 sessions.odata = sessions.data;
+sessions.oduration = sessions.duration;
 
 %%
 sessions = sortrows(sessions,{'user','hasbracelet'});

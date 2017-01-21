@@ -10,7 +10,7 @@ sessions.joints_act_L_count = zeros(height(sessions),1);
 sessions.joints_act_H_count= zeros(height(sessions),1);
 sessions.samples = sessions.man_act_L_pct ;
 
-
+%%
 threshold_man = [0.04,0.07]; 
 threshold_joint = [0.0872665, 0.174533];
 
@@ -18,17 +18,28 @@ threshold_joint = [0.0872665, 0.174533];
 jointmax0 = [3.0541, 2.618, 1.7016, 1.047, 3.059, 2.094, 3.059];
 jointmin0 = [-3.0541, -0.05, -1.7016, -2.147, -3.059, -1.5707, -3.059];
 
-jointmax0L = jointmax0-threshold_joint(1);
-jointmax0H = jointmax0-threshold_joint(2);
-jointmin0L = jointmin0+threshold_joint(1);
-jointmin0H = jointmin0+threshold_joint(2);
+jointmax0H = jointmax0-threshold_joint(1);
+jointmax0L = jointmax0-threshold_joint(2);
+jointmin0H = jointmin0+threshold_joint(1);
+jointmin0L = jointmin0+threshold_joint(2);
 
+hbsetup = [];
+hbsetup.jointmax0 = jointmax0;
+hbsetup.jointmin0 = jointmin0;
+hbsetup.jointmax0L = jointmax0L;
+hbsetup.jointmax0H = jointmax0H;
+hbsetup.jointmin0L = jointmin0L;
+hbsetup.jointmin0H = jointmin0H;
+hbsetup.threshold_man = threshold_man;
+
+%%
 for I=1:height(sessions)
     data = sessions.data{I};
     n = height(data);
     
-    sessions.man_act_L_count(I) = sum(data.man_index > threshold_man(1));
-    sessions.man_act_H_count(I) = sum(data.man_index > threshold_man(2));
+
+    sessions.man_act_L_count(I) = sum(data.man_index < threshold_man(2));
+    sessions.man_act_H_count(I) = sum(data.man_index < threshold_man(1));
     sessions.man_act_L_pct(I) = sessions.man_act_L_count(I)*100/n;
     sessions.man_act_H_pct(I) = sessions.man_act_H_count(I)*100/n;
 
@@ -36,6 +47,7 @@ for I=1:height(sessions)
     jointminL = repmat(jointmin0L,n,1);
     jointmaxH = repmat(jointmax0H,n,1);
     jointminH = repmat(jointmin0H,n,1);
+    
     % first count each joint activation, then sum all columns so that we
     % count number of acticated joints
     qH = sum(data.joints > jointmaxH | data.joints < jointminH,2);
@@ -48,5 +60,5 @@ for I=1:height(sessions)
 end
 
 %%
-save('loaded.mat','sessions')
+save('loaded.mat','sessions','hbsetup')
 
