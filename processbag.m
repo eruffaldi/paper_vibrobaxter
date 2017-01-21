@@ -7,6 +7,9 @@ bag1 = ros.Bag.load(f);
     [msgs_eel, meta_eel] = bag1.readAll('/robot/limb/left/endpoint_state');
     [msgs_man, meta_man] = bag1.readAll('/manipulability_index');
     [msgs_mess, meta_mess] = bag1.readAll('/hb_6/message_type');
+    msgs_messc = cellfun(@(x) x.data,msgs_mess,'UniformOutput',0);
+    meta_messt = cellfun(@(x) x.time.time,meta_mess);
+    msgs_messc = categorical(msgs_messc,        {'Singularity attention','Singularity alarm','Manipulability attention','Manipulability alarm'},{'SL','SH','ML','MH'});
     [msgs_dem, meta_dem] = bag1.readAll('/demonstrator');
     
 for i=1:size(msgs_joints,2)
@@ -197,6 +200,12 @@ data.k2_end_leave = k2_end_leave;
 data.data = table();
 data.data.time = xq_t(:);
 data.data.man_index =man_index_int(:);
+
+% we mark nearest point in time xq: for every time in msgs_messt find
+% nearest point in xq
+qpi = interp1(xq,1:length(xq),meta_messt,'nearest');
+data.data.activation = nan(height(data.data),1);
+data.data.activation(qpi) = msgs_messc;
 
 W= zeros(length(xq),7);
 W(:,1) = jleft1_int;

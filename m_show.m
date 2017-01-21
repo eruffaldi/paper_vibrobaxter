@@ -5,7 +5,6 @@ end
 mysetup('exportfig');
 Jn = m_jointnames();
 Js = names2struct(Jn,0);
-summary(sd)
 load time_real_exp
 tim = maketab(tim);
 tim.hasbracelet = cell2mat(tim.hasbracelet);  % TODO more generic
@@ -22,6 +21,7 @@ hbsetup.threshold_man
 
 %% Joints
 % pick joint + attention and alarm limit
+r2d = 180/pi;
 for I=1:7
     figure(I)
     clf
@@ -29,7 +29,8 @@ for I=1:7
     hold on
     [p2,p3] = m_show_bounds(sd,hbsetup,td,I,0);
 
-    
+    hold on
+    p4 = plot(sd.time,sd.activation,'m*')
     legend([p1,p2,p3],{'Joint','Attention','Alarm'});
     title(sprintf('Joint %s',Jn{I}),'Interpreter', 'none');
     xlabel('Time (s)');

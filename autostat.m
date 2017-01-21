@@ -7,6 +7,10 @@ st = cell2struct(cell(length(s),1),s);
 assert(isfield(st,'user'),'user field is required');
 assert(isfield(st,'group'),'group field is required');
 
+if isfield(model,'plots')
+    model.plots = 0;
+end
+
 nu = unique(t.user);
 ng = unique(t.group);
 ri = model.subjectsession;
@@ -131,7 +135,9 @@ if w_userdisparity == 0
 end
 
 % FINALLY PLOT
+if model.plots
 close all
+
 %conditionvalues_withg =[{t.group},conditionvalues];
 %conditions_withg = [{'group'} model.conditions];
 for I=1:length(model.errorplots)
@@ -162,8 +168,8 @@ for I=1:length(model.errorplots)
         end
 
         h = barwitherr(eV,MV);
-        ylabel('Pct Overlap');
-        set(gca,'XTickLabel',{'No bracelet','With bracelet'});
+        ylabel('Value');
+        set(gca,'XTickLabel',gc_groupnames);
         legend(vvsafe);
     else
          w = model.targets{I};
@@ -195,5 +201,6 @@ if ng > 1
     % TODO ylabel
     title(sprintf('Target %s (with group)',strrep(w,'_','-')));
  end
+end
 end
 % power effect

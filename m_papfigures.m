@@ -60,5 +60,7 @@ ylabel('Manipulability Index');
     export_fig('pdf','-transparent','mantrigger.pdf');
     
     
-    %%
-    boxplot(
+%%
+ylabel('% Activation');
+set(gca,'XTickLabels',{'Without HB','With HB'});
+export_fig('pdf','-transparent','stats.pdf')
