@@ -6,7 +6,6 @@ end
 mysetup('exportfig');
 Jn = m_jointnames();
 Js = names2struct(Jn,0);
-summary(sd)
 load time_real_exp
 tim = maketab(tim);
 tim.hasbracelet = cell2mat(tim.hasbracelet);  % TODO more generic
@@ -26,8 +25,8 @@ set(0,'defaulttextfontname','Helvetica');
 set(0,'defaultaxesfontsize',16);
 set(0,'defaulttextfontsize',16);
 
-%%
-I=6; % joint left_w1
+
+I=2; % joint left_e1
     figure(I)
     clf
     [p2,p3] = m_show_bounds(sd,hbsetup,td,I,0);
