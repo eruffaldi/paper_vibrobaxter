@@ -120,15 +120,25 @@ if w_userdisparity == 0
         if(size(y,2) > 1)
             y = mean(y,2); % TODO MANOVA
         end
+        
         if length(model.conditions) == 1
-            [p,xt,stats] = anova1(double(y),t.(model.conditions{1}),'off');
+            cc = conditionvalues{1};
+            if strcmp(model.targets{I}{2},'pct')  
+                [b,dev,stats] = glmfit(cc,double(y),'binomial','link','logit');
+                p = stats.p;
+            elseif strcmp(model.targets{I}{2},'count')  
+                [~,dev,stats] = glmfit(cc,double(y),'poisson','link','log');
+                p = stats.p;
+            else
+                [p,xt,stats] = anova1(double(y),cc,'off');
+            end
         else
-            [p,xt,stats] = anovan(double(y),conditionvalues,'model','interaction','varnames',model.conditions);
+                [p,xt,stats] = anovan(double(y),conditionvalues,'model','interaction','varnames',model.conditions);
         end
         outs.target{end+1} = targetnames{I};
         %outs.condition{end+1} = model.conditions;
         outs.stats{end+1} = stats;
-        outs.p(end+1,:) = p;
+        outs.p{end+1} = p;
     end
     cstats = maketab(outs);
     
