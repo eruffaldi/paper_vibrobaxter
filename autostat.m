@@ -7,7 +7,7 @@ st = cell2struct(cell(length(s),1),s);
 assert(isfield(st,'user'),'user field is required');
 assert(isfield(st,'group'),'group field is required');
 
-if isfield(model,'plots')
+if isfield(model,'plots') == 0
     model.plots = 0;
 end
 
@@ -124,10 +124,18 @@ if w_userdisparity == 0
         if length(model.conditions) == 1
             cc = conditionvalues{1};
             if strcmp(model.targets{I}{2},'pct')  
-                [b,dev,stats] = glmfit(cc,double(y),'binomial','link','logit');
+                [b,dev,stats] = glmfit(double(y),cc,'binomial','link','logit');
                 p = stats.p;
+                % TODO case [y N]
+                % TODO evaluate the meaning of p
+                % glmfit(X,y) the y is success(binary) or instead the
+                % number of successes and the number of trials
+                %   
+                % variant with [cc N] as the grouping of the subject
+                % (additional element)
+                % http://matlabdatamining.blogspot.it/2009/03/logistic-regression.html
             elseif strcmp(model.targets{I}{2},'count')  
-                [~,dev,stats] = glmfit(cc,double(y),'poisson','link','log');
+                [~,dev,stats] = glmfit(double(y),cc,'poisson','link','log');
                 p = stats.p;
             else
                 [p,xt,stats] = anova1(double(y),cc,'off');

@@ -1,0 +1,57 @@
+
+http://yatani.jp/teaching/doku.php?id=hcistats:start
+
+https://jira.ai2.upv.es/confluence/download/attachments/13631509/WGM+38+-+Statistics+for+HCI+Research+I.pdf?version=1&modificationDate=1321254205000
+
+	SUPER TABLE!!!
+	SUPER
+		F-Test ---> used in ANOVA and regression --> not robust to non-normality
+		t-test ---> paired vs unpaired
+			Within-subject design -> paired t test. 
+
+http://hci.cs.wisc.edu/courses/hci/lectures/fall2011/HCI-Week12-Lecture13.pdf
+
+	SUPER SUPER TABLE
+	dice Logistic Regression
+
+SHORT Wobbrock, Jacob O. "Practical statistics for human-computer interaction: an independent study combining statistics theory and tool know-how." Annual workshop of the human-computer interaction consortium, Pacific Grove, CA. 2011.
+https://faculty.washington.edu/wobbrock/pubs/hcic-11.pdf
+
+http://web.mit.edu/6.813/www/sp16/classes/13-experiment-analysis/
+
+-----
+
+Alternative: two paired groups, interval/ratio not normal, Wilcoxon == Mann-Whitney U-test. Assumes independnece >=>
+
+
+--------------
+
+
+Count (on same span) <-> Feedback (binary) => Poisson regression
+	total count per task
+
+Percentage of Error <-> Feedback (binary)	
+	actually it is: count/unitoftime
+
+can we say that the % of error is a predictor of the Feedback
+
+
+- Logistic regression is useful when you are predicting a binary outcome from a set of continuous predictor variables.
+	anova(fit1,fit2, test="Chisq")
+
+- Poisson regression is useful when predicting an outcome variable representing counts from a set of continuous predictor variables.
+
+? http://www.ats.ucla.edu/stat/r/dae/poissonreg.htm
+GOOD http://www.ats.ucla.edu/stat/sas/output/sas_poisson_output.htm
+
+==> The difference in the Deviance and degrees of freedom of two nested models can be used in the likelihood ratio chi-square tests.
+
+First, note that the Deviance has an approximate chi-square distribution with n-p degrees of freedom, where n is the number of observations and p is the number of predictor variables (including the intercept), and the expected value of a chi-square random variable is equal to the degrees of freedom. Then, if our model fits the data well, the ratio of the Deviance to DF, Value/DF, should be about one. Large ratio values may indicate model misspecification or an over-dispersed response variable; ratios less than one may also indicate model misspecification or an under-dispersed response variable.
+
+- Poisson regression may also be appropriate for rate data, where the rate is a count of events divided by some measure of that unit's exposure
+	Demographers may model death rates in geographic areas as the count of deaths divided by person−years. More generally, event rates can be calculated as events per unit time, which allows the observation window to vary for each unit. 
+
+- logit is also central to the probabilistic Rasch model for measurement, which has applications in psychological and educational assessment, among other areas.
+
+- Rasch models is a special case of item response theory and, more generally, a special case of a generalized linear model - 0 or 1 typically
+

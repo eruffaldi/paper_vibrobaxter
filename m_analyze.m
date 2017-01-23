@@ -16,6 +16,30 @@ end
 % http://www.theanalysisfactor.com/dependent-variables-never-meet-normality/
 % http://www.ats.ucla.edu/stat/stata/faq/proportion.htm
 summary(sessions)
+%%
+ss = sessions(:,{'hasbracelet','joints_act_H_count','man_act_LH_count','man_act_LH_pct','joints_act_LH_count','duration','joints_act_LH_pct'});
+ss.man_act_LH_bin = ss.man_act_LH_count > 0;
+
+[ct,chi2,p,labels] = crosstab(ss.hasbracelet,[h,p,stats] = fishertest(ct)ss.man_act_LH_bin);
+fishertest(ct)
+
+%%
+
+glmeJLH = fitglme(ss,'hasbracelet ~ 1 + joints_act_LH_pct','Distribution','Binomial','Link','logit');
+glmeJLH
+
+glmeD = fitglme(ss,'hasbracelet ~ duration');
+glmeD
+
+glmeMLH = fitglme(ss,'hasbracelet ~ 1 + man_act_LH_pct');
+glmeMLH
+
+glmePJLH = fitglme(ss,'hasbracelet ~ joints_act_LH_count','Distribution','Poisson','Link','log');
+glmePJLH
+
+glmePMLH = fitglme(ss,'hasbracelet ~ joints_act_H_count','Distribution','Poisson','Link','log');
+glmePMLH
+
 
 %%
 model = [];
@@ -24,7 +48,7 @@ model.subjectsession = 'relindex'; % which session of user
 model.targets = {{'duration','s'}, {'man_act_L_pct','pct'},{'man_act_LH_pct','pct'},{'man_act_H_pct','pct'},{'joints_act_LH_pct','pct'},{'joints_act_L_pct','pct'},{'joints_act_H_pct','pct'}};
 model.errorplots = {{'duration'},{'man_act_L_pct','man_act_LH_pct','man_act_H_pct','joints_act_L_pct','joints_act_H_pct','joints_act_LH_pct'}};
 model.applylog = 0;
-model.plots =0 ;
+model.plots =1;
 cstats = autostat(sessions,model);
 
 cstats
