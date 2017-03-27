@@ -3,6 +3,10 @@ mysetup('rosbag');
 
 %% collezionare e dividere i partecipanti
 load users
+for I=1:length(users)
+    users{I}.bag = strrep(users{I}.bag,'exp_results','data');
+end
+
 sessions = maketab(users);
 sessions.hasbracelet = cell2mat(sessions.hasbracelet);
 

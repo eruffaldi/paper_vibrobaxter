@@ -1,4 +1,5 @@
 function [p2,p3] = m_show_bounds(sd,hbsetup,td,I,man)
+r2d = 180/pi;
 
 rr = [];
 rr.ps = cell2mat([td.ini_pick,td.end_pick,td.ini_place,td.end_place,td.ini_leave,td.end_leave]);

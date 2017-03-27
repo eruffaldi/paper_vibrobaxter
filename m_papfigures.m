@@ -1,3 +1,4 @@
+r2d = 180/pi;
 
 %% Figure of motion
 if exist('sessions') == 0
@@ -44,6 +45,8 @@ I=2; % joint left_e1
     
 %%
 figure(8)
+r2d = 180/pi;
+
 clf
 p1=plot(sd.time,sd.man_index,'b','LineWidth',2);
 hold on
