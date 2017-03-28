@@ -57,7 +57,7 @@ sd = xsessions.odata{sid};
 td = xsessions(sid,:);
 
 pp(I)=plot(sd.time,sd.man_index,colors{I},'LineWidth',2);
-hold on
+hold on 
 [p2,p3] = m_show_bounds(sd,hbsetup,td,I,1);
 
 
