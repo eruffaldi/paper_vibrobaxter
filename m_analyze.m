@@ -20,8 +20,8 @@ summary(sessions)
 ss = sessions(:,{'hasbracelet','joints_act_H_count','man_act_LH_count','man_act_LH_pct','joints_act_LH_count','duration','joints_act_LH_pct'});
 ss.man_act_LH_bin = ss.man_act_LH_count > 0;
 
-[ct,chi2,p,labels] = crosstab(ss.hasbracelet,[h,p,stats] = fishertest(ct)ss.man_act_LH_bin);
-fishertest(ct)
+%[ct,chi2,p,labels] = crosstab(ss.hasbracelet,[h,p,stats] = fishertest(ct)ss.man_act_LH_bin);
+%fishertest(ct)
 
 %%
 
@@ -73,7 +73,7 @@ model.subjectsession = 'relindex'; % which session of user
 model.targets = {{'duration','s'}, {'joints_maxdist','dist1'},{'joints_meandist','dist1'}};
 model.errorplots = {}; % {{'duration'},{'man_act_L_pct','man_act_LH_pct','man_act_H_pct','joints_act_L_pct','joints_act_H_pct','joints_act_LH_pct'}};
 model.applylog = 0;
-model.plots =0 ;
+model.plots =1 ;
 cstats = autostat(sessions,model);
 
 cstats

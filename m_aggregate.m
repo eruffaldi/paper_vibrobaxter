@@ -89,11 +89,12 @@ for I=1:height(sessions)
     sessions.joints_act_LH_pct(I) = 100*sessions.joints_act_LH_count(I,1)/n;
     sessions.joints_maxdist(I) = max(data.normalizeddist);
     sessions.joints_mindist(I) = min(data.normalizeddist);
+    size(std(data.normalizeddist))
     sessions.joints_stddist(I) = std(data.normalizeddist);
     sessions.joints_meandist(I) = mean(data.normalizeddist);
     sessions.samples(I) = n;
 end
 
 %%
-save('loaded.mat','sessions','hbsetup')
+%save('loaded.mat','sessions','hbsetup')
 

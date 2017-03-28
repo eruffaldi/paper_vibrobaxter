@@ -106,6 +106,9 @@ if length(outp) > 0
     disp('Cases for which there is some effect')
         outp
         outs
+else
+    disp('No order effect on ')
+    model.targets
 end
     
 
