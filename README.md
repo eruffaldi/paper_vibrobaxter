@@ -1,4 +1,4 @@
-topics:      /demonstrator                                 6 msgs    : vib_haptic_device/User_dem
+t maitopics:      /demonstrator                                 6 msgs    : vib_haptic_device/User_dem
              /hb_6/message_type                            1 msg     : std_msgs/String
              /manipulability_index                      1527 msgs    : std_msgs/Float64
              /robot/end_effector/left_gripper/state     1572 msgs    : baxter_core_msgs/EndEffectorState

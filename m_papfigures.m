@@ -1,5 +1,9 @@
 
-%% Figure of motion
+%% Figure of motion 
+close all
+set(0,'defaultAxesFontName', 'Times New Roman')
+set(0,'defaultTextFontName', 'Times New Roman')
+
 r2d = 180/pi;
 if exist('sessions') == 0
     load('loaded');
@@ -20,8 +24,8 @@ sd = xsessions.odata{sid};
 td = xsessions(sid,:);
 hbsetup.threshold_man
 
-set(0,'defaultaxesfontname','Helvetica');
-set(0,'defaulttextfontname','Helvetica');
+set(0,'defaultaxesfontname','Times New Roman');
+set(0,'defaulttextfontname','Times New Roman');
 
 set(0,'defaultaxesfontsize',16);
 set(0,'defaulttextfontsize',16);
@@ -41,9 +45,12 @@ I=2; % joint left_e1
     ylabel('Joint (deg)');
     set(findall(gcf,'-property','FontSize'),'FontSize',16)
     set(gcf,'Position',[  440   413   493   385]);
-    export_fig('pdf','-transparent','jointtrigger.pdf');
+    export_fig('pdf','-transparent','../img/jointtrigger.pdf');
     
 %%
+close all
+set(0,'defaultAxesFontName', 'Times New Roman')
+set(0,'defaultTextFontName', 'Times New Roman')
 figure(8)
 r2d = 180/pi;
 clf
@@ -67,12 +74,17 @@ xlabel('Time (s)');
 ylabel('Manipulability Index');
 ylim([0,0.14])
     set(findall(gcf,'-property','FontSize'),'FontSize',16)
+    set(findall(gcf,'-property','FontFamily'),'FontFamily','Times New Roman')
     set(gcf,'Position',[  272   383   662   415]);
+
     export_fig('pdf','-transparent','../img/mantrigger.pdf');
     
     
 %%
 close all
+set(0,'defaultAxesFontName', 'Times New Roman')
+set(0,'defaultTextFontName', 'Times New Roman')
+
 % 2 groups with 4 variables
 z = zeros(2,4);
 ze = zeros(2,4);
@@ -91,12 +103,12 @@ end
 h = barwitherr(z,ze);
 legend(w,'Interpreter','none');
 xlabel('Group (metric)');
-ylabel('Value');
+ylabel('% Activation');
 set(gca,'XTickLabels',{'Without HB','With HB'});
 %export_fig('pdf','-transparent','../img/stats.pdf')
 
 
-%%
+%% NOT USED
 % 2 groups with 4 variables
 clf
 z = zeros(2,4);
