@@ -37,14 +37,19 @@ hbsetup.jointmin0H = jointmin0H;
 hbsetup.threshold_man = threshold_man;
 
 %%
+%ime    man_index    activation       joints   
 for I=1:height(sessions)
     data = sessions.data{I};
     n = height(data);
     
-    % Regions: Mhigh Mlow normal
-    qmL = data.man_index < threshold_man(2) & data.man_index > threshold_man(1);
-    qmH = data.man_index < threshold_man(1);
-    qmLH = data.man_index < threshold_man(2);
+    % man_index is strictly positive, the lower the lesser
+    % 
+    % High Range: 0 min
+    % Low Range: min max
+    % Low-High: 0 max
+    qmL = data.man_index <= threshold_man(2) & data.man_index > threshold_man(1);
+    qmH = data.man_index <= threshold_man(1);
+    qmLH = data.man_index <= threshold_man(2);
     sessions.man_act_L_count(I) = sum(qmL);
     sessions.man_act_H_count(I) = sum(qmH);
     sessions.man_act_LH_count(I) = sum(qmLH);

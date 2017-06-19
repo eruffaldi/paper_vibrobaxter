@@ -1,3 +1,23 @@
+# Data Processing
+
+ROS bag -> MATALB -> Aggregation -> Plot
+
+## Support Files
+
+time_real_exp.mat contains segmentation
+
+## ROS Bag
+
+1_exp_brac_2_exp_no_brac and 1_exp_no_brac_2_exp_brac with 1.15 GB of data
+
+## Export to Matlab
+
+python collectusers.py => users.mat
+m_prepare uses processbag => loaded.mat
+
+
+# ROS Messages in Bag
+
 t maitopics:      /demonstrator                                 6 msgs    : vib_haptic_device/User_dem
              /hb_6/message_type                            1 msg     : std_msgs/String
              /manipulability_index                      1527 msgs    : std_msgs/Float64

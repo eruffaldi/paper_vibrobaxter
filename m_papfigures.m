@@ -97,13 +97,17 @@ for I=1:2
         m = mean(ss.(w{J}));
         s = std(ss.(w{J}));
         z(I,J) = m;
-        ze(I,J) = s*1.96/sqrt(height(ss));
+        
+        
+        %ze(I,J) = s*1.96/sqrt(height(ss));
+        ze(I,J) = s;
     end
 end
 h = barwitherr(z,ze);
+ylim([0,25])
 legend(w,'Interpreter','none');
 xlabel('Group (metric)');
-ylabel('% Activation');
+ylabel('% Activation (with \pm std)');
 set(gca,'XTickLabels',{'Without HB','With HB'});
 %export_fig('pdf','-transparent','../img/stats.pdf')
 
