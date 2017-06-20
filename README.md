@@ -14,7 +14,9 @@ time_real_exp.mat contains segmentation
 
 python collectusers.py => users.mat
 m_prepare uses processbag => loaded.mat
-
+m_aggregate provides the aggregata data for each session
+m_analyze does the statistical analysis
+m_papfigures does final plotting
 
 # ROS Messages in Bag
 

@@ -1,3 +1,4 @@
+# scans the ROS bag folder and produces the users.mat file
 import os,sys
 import scipy.io as sio
 import pprint
